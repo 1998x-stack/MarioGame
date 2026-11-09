@@ -19,7 +19,8 @@ class GameTests(unittest.TestCase):
         pygame.event.clear()
 
     def tearDown(self):
-        pygame.event.clear()
+        if pygame.get_init():
+            pygame.event.clear()
         pygame.quit()
 
     def test_game_starts_with_real_assets_and_level(self):
