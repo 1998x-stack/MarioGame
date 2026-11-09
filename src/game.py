@@ -6,6 +6,7 @@ from src.player import Player
 from src.level import Level
 from src.ui import UI
 from config.assets_config import BG_MUSIC
+from src.audio import start_music
 from config.settings import WINDOW_WIDTH, WINDOW_HEIGHT, LEVEL_WIDTH, MARIO_WIDTH
 
 class Game:
@@ -25,12 +26,19 @@ class Game:
         self.load_level(self.level_number)
 
         # Load and play background music
-        pygame.mixer.music.load(BG_MUSIC)
-        pygame.mixer.music.play(-1)  # Loop indefinitely
+        start_music(BG_MUSIC)  # Silent fallback when audio is unavailable
 
         # Timer for displaying level number
         self.level_display_time = 2000  # Display level number for 2 seconds
         self.level_display_timer = pygame.time.get_ticks()
+
+    def restart(self):
+        """Reinitialize the match without closing the display."""
+        self.score = 0
+        self.lives = 3
+        self.game_over = False
+        self.level_number = 1
+        self.load_level(1)
 
     def load_level(self, level_number):
         """Load a level"""
@@ -55,6 +63,11 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
+            if event.type == pygame.KEYDOWN:
+                if event.key in (pygame.K_ESCAPE, pygame.K_q):
+                    return False
+                if event.key == pygame.K_r:
+                    self.restart()
 
         if not self.game_over:
             # Update player and level
@@ -113,6 +126,6 @@ class Game:
         if current_time - self.level_display_timer < self.level_display_time:
             self.ui.draw_text(self.screen, f"Level {self.level_number}", WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2, centered=True)
         if self.game_over:
-            self.ui.draw_text(self.screen, "Game Over", WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2, centered=True)
+            self.ui.draw_text(self.screen, "Game Over - R: restart", WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2, centered=True)
 
         pygame.display.flip()  # Update display

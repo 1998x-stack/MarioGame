@@ -1,21 +1,14 @@
-import sys, os
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
-
-# assets_config.py
-
-# Base Asset Paths
-ASSETS_DIR = os.path.join("assets")
-IMAGES_DIR = os.path.join(ASSETS_DIR, "images")
-SOUNDS_DIR = os.path.join(ASSETS_DIR, "sounds")
-
-# Image Paths
-MARIO_IMAGE = os.path.join(IMAGES_DIR, "mario.png")
-BACKGROUND_IMAGE = os.path.join(IMAGES_DIR, "background.png")
-ENEMY_IMAGE = os.path.join(IMAGES_DIR, "enemy.png")
-COIN_IMAGE = os.path.join(IMAGES_DIR, "coin.png")  # Coin image
-TILE_IMAGE = os.path.join(IMAGES_DIR, "tile.png")  # Ground tile image
-
-# Sound Paths
-JUMP_SOUND = os.path.join(SOUNDS_DIR, "jump.wav")
-BG_MUSIC = os.path.join(SOUNDS_DIR, "background.mp3")
-COIN_SOUND = os.path.join(SOUNDS_DIR, "coin.wav")  # Coin collection sound
+"""Absolute repo-relative paths to existing game assets."""
+from pathlib import Path
+_ROOT = Path(__file__).resolve().parents[1]
+ASSETS_DIR = _ROOT / "assets"
+IMAGES_DIR = ASSETS_DIR / "images"
+SOUNDS_DIR = ASSETS_DIR / "sounds"
+MARIO_IMAGE = str(IMAGES_DIR / "mario.png")
+BACKGROUND_IMAGE = str(IMAGES_DIR / "background.png")
+ENEMY_IMAGE = str(IMAGES_DIR / "enemy.png")
+COIN_IMAGE = str(IMAGES_DIR / "coin.png")
+TILE_IMAGE = str(IMAGES_DIR / "tile.png")
+JUMP_SOUND = str(SOUNDS_DIR / "jump.wav")
+BG_MUSIC = str(SOUNDS_DIR / "background.mp3")
+COIN_SOUND = str(SOUNDS_DIR / "coin.wav")

@@ -3,7 +3,7 @@ import pygame
 from config.settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
 from src.game import Game
 
-def main():
+def main(max_frames=None):
     """Main function: initialize game window and run the game loop"""
     # Initialize pygame
     pygame.init()
@@ -18,6 +18,7 @@ def main():
     # Game main loop
     clock = pygame.time.Clock()
     running = True
+    frames = 0
     while running:
         # Frame rate limit
         clock.tick(FPS)
@@ -27,6 +28,9 @@ def main():
 
         # Render game screen
         game.render()
+        frames += 1
+        if max_frames is not None and frames >= max_frames:
+            break
 
     # Quit pygame
     pygame.quit()

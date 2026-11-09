@@ -6,6 +6,7 @@ from config.settings import (
     PLAYER_SPEED, PLAYER_JUMP_FORCE, GRAVITY, MARIO_WIDTH, MARIO_HEIGHT, PLAYER_MAX_JUMPS
 )
 from config.assets_config import MARIO_IMAGE, JUMP_SOUND, COIN_SOUND
+from src.audio import load_effect
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -24,8 +25,8 @@ class Player(pygame.sprite.Sprite):
         self.dead = False    # Player's alive status
 
         # Load sounds
-        self.jump_sound = pygame.mixer.Sound(JUMP_SOUND)
-        self.coin_sound = pygame.mixer.Sound(COIN_SOUND)
+        self.jump_sound = load_effect(JUMP_SOUND)
+        self.coin_sound = load_effect(COIN_SOUND)
 
     def handle_keys(self):
         """Handle keyboard input"""
@@ -44,7 +45,7 @@ class Player(pygame.sprite.Sprite):
                 if self.jump_count < PLAYER_MAX_JUMPS:
                     self.speed_y = -PLAYER_JUMP_FORCE
                     self.jump_count += 1
-                    self.jump_sound.play()  # Play jump sound effect
+                    self.jump_sound.play() if self.jump_sound is not None else None  # Play jump sound effect
                 self.space_pressed = True
         else:
             self.space_pressed = False
@@ -78,7 +79,7 @@ class Player(pygame.sprite.Sprite):
             if self.speed_y > 0 and self.rect.bottom <= enemy.rect.bottom:  # Falling down, so defeat the enemy
                 self.rect.bottom = enemy.rect.top
                 self.speed_y = -PLAYER_JUMP_FORCE / 2  # Bounce up
-                self.jump_sound.play()
+                self.jump_sound.play() if self.jump_sound is not None else None
                 enemy.die(game.level, game)
             else:
                 # Player dies if hit from the side or bottom
@@ -87,7 +88,7 @@ class Player(pygame.sprite.Sprite):
         # Check for collision with coins
         coin_hit_list = pygame.sprite.spritecollide(self, coins_group, True)
         for coin in coin_hit_list:
-            self.coin_sound.play()
+            self.coin_sound.play() if self.coin_sound is not None else None
             game.score += 1
 
     def check_collision(self, group, direction):

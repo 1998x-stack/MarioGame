@@ -5,6 +5,7 @@ import pygame
 from config.assets_config import ENEMY_IMAGE, COIN_SOUND
 from config.settings import ENEMY_HEIGHT, ENEMY_WIDTH
 from src.coin import Coin
+from src.audio import play_effect
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y, move_range):
@@ -31,7 +32,7 @@ class Enemy(pygame.sprite.Sprite):
     def die(self, level, game):
         """Handle enemy death, turning into a coin"""
         # Play coin sound
-        pygame.mixer.Sound(COIN_SOUND).play()
+        play_effect(COIN_SOUND)
         # Create a coin at enemy's position
         coin = Coin(self.rect.x, self.rect.y)
         level.coins_group.add(coin)
